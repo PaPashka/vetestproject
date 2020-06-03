@@ -37,10 +37,10 @@ private:
     void setRect(qreal p_x, qreal p_y, qreal p_width, qreal p_height);
     void setGrabbersPositions() override;
     void rotate(qreal angle);
+    int grabbersCount() override;
 
 private slots:
     void doOnGrabberMoved(VeGrabberDot *grabber, const QPointF &p_pos, Qt::MouseButtons p_action) override;
-    int grabbersCount() override;
 
 };
 

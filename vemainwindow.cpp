@@ -1,7 +1,7 @@
 #include "vemainwindow.h"
 #include "ui_vemainwindow.h"
 
-VeMainWindow::VeMainWindow(QWidget *parent)
+VEMainWindow::VEMainWindow(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::VEMainWindow)
 {
@@ -21,6 +21,9 @@ VeMainWindow::VeMainWindow(QWidget *parent)
     ui->pushBtnBrushColor->setStyleSheet("border: 2px solid black;"
                                          "border-radius: 0px;"
                                          "background-color: transparent;");
+    ui->pushBtnPenColor->setStyleSheet("border: 1px solid black;"
+                                         "border-radius: 0px;"
+                                         "background-color: black;");
 
     scene_ = new VeCanvas(this);
     scene_->setSceneRect(ui->graphicsView->rect());
@@ -28,12 +31,12 @@ VeMainWindow::VeMainWindow(QWidget *parent)
     ui->graphicsView->setScene(scene_);
 }
 
-VeMainWindow::~VeMainWindow()
+VEMainWindow::~VEMainWindow()
 {
     delete ui;
 }
 
-void VeMainWindow::slotForToolBtn_clicked()
+void VEMainWindow::slotForToolBtn_clicked()
 {
     scene_->setCurrentTool(toolsGroup_->checkedId());
     switch (toolsGroup_->checkedId()) {
@@ -53,37 +56,40 @@ void VeMainWindow::slotForToolBtn_clicked()
     }
 }
 
-void VeMainWindow::slotForVEShapeItem_selected(const VeShapeItem *p_item)
-{    
+void VEMainWindow::slotForVEShapeItem_selected(const VeShapeItem *p_item)
+{
     if (p_item) {
-        ui->pushBtnBrushColor->setStyleSheet("border: 2px solid #000000;"
+        ui->pushBtnBrushColor->setStyleSheet("border: 2px solid " + p_item->pen().color().name(QColor::HexArgb) + ";"
                                              "border-radius: 0px;"
                                              "background-color: " + p_item->brush().color().name(QColor::HexArgb) + ";");
+        ui->pushBtnPenColor->setStyleSheet("border: 1px solid #000000;"
+                                             "border-radius: 0px;"
+                                             "background-color: " + p_item->pen().color().name(QColor::HexArgb) + ";");
         ui->spinBoxPenWidth->setValue(p_item->pen().width());
     }
 }
 
-void VeMainWindow::on_pushBtnBrushColor_clicked()
+void VEMainWindow::on_pushBtnBrushColor_clicked()
 {
     QBrush new_brush = scene_->getCurrentBrush();
     QColor selected_color = QColorDialog::getColor(new_brush.color(), this, tr("Select Color"), QColorDialog::ShowAlphaChannel);
     if (selected_color.isValid()) {
         new_brush.setColor(selected_color);
         scene_->setCurrentBrush(new_brush);
-        ui->pushBtnBrushColor->setStyleSheet("border: 2px solid #000000;"
+        ui->pushBtnBrushColor->setStyleSheet("border: 2px solid " + scene_->getCurrentPen().color().name(QColor::HexArgb) + ";"
                                              "border-radius: 0px;"
                                              "background-color: " + selected_color.name(QColor::HexArgb) + ";");
     }
 }
 
-void VeMainWindow::on_spinBoxPenWidth_valueChanged(int arg1)
+void VEMainWindow::on_spinBoxPenWidth_valueChanged(int arg1)
 {
     QPen new_pen = scene_->getCurrentPen();
     new_pen.setWidth(arg1);
     scene_->setCurrentPen(new_pen);
 }
 
-void VeMainWindow::on_pushBtnSave_clicked()
+void VEMainWindow::on_pushBtnSave_clicked()
 {
     QString file_path = QFileDialog::getSaveFileName(this, tr("Save SVG"), "", tr("SVG files (*.svg)"));
 
@@ -92,11 +98,27 @@ void VeMainWindow::on_pushBtnSave_clicked()
     }
 }
 
-void VeMainWindow::on_pushBtnLoad_clicked()
+void VEMainWindow::on_pushBtnLoad_clicked()
 {
     QString file_path = QFileDialog::getOpenFileName(this, tr("Open SVG"), "", tr("SVG files (*.svg)"));
 
     if (!file_path.isEmpty()){
         scene_->loadFromSVG(file_path);
+    }
+}
+
+void VEMainWindow::on_pushBtnPenColor_clicked()
+{
+    QPen new_pen = scene_->getCurrentPen();
+    QColor selected_color = QColorDialog::getColor(new_pen.color(), this, tr("Select Color"), QColorDialog::ShowAlphaChannel);
+    if (selected_color.isValid()) {
+        new_pen.setColor(selected_color);
+        scene_->setCurrentPen(new_pen);
+        ui->pushBtnPenColor->setStyleSheet("border: 1px solid #000000;"
+                                             "border-radius: 0px;"
+                                             "background-color: " + selected_color.name(QColor::HexArgb) + ";");
+        ui->pushBtnBrushColor->setStyleSheet("border: 2px solid " + selected_color.name(QColor::HexArgb) + ";"
+                                             "border-radius: 0px;"
+                                             "background-color: " + scene_->getCurrentBrush().color().name(QColor::HexArgb) + ";");
     }
 }

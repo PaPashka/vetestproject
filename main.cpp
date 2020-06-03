@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    VeMainWindow w;
+    VEMainWindow w;
     w.show();
     return a.exec();
 }

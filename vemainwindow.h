@@ -15,13 +15,13 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class VEMainWindow; }
 QT_END_NAMESPACE
 
-class VeMainWindow : public QWidget
+class VEMainWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit VeMainWindow(QWidget *parent = nullptr);
-    ~VeMainWindow();
+    explicit VEMainWindow(QWidget *parent = nullptr);
+    ~VEMainWindow();
 
 private:
     Ui::VEMainWindow *ui;
@@ -35,5 +35,6 @@ private slots:
     void on_spinBoxPenWidth_valueChanged(int arg1);
     void on_pushBtnSave_clicked();
     void on_pushBtnLoad_clicked();
+    void on_pushBtnPenColor_clicked();
 };
 #endif // VEMAINWINDOW_H

@@ -51,3 +51,20 @@ void VeShapeItem::addGrabber(int p_index, bool p_state)
         }
 }
 
+void VeShapeItem::initializeGrabbers()
+{
+    int delta_count_grabbers = grabbersCount() - grabbers_.count();
+
+    if (delta_count_grabbers < 0) {
+        for(int i = 0; i < delta_count_grabbers ; i++) {
+            delete grabbers_.last();
+            grabbers_.removeLast();
+        }
+    } else if (delta_count_grabbers > 0) {
+        for (int i = 0; i < delta_count_grabbers; i++) {
+            addGrabber();
+        }
+    }
+    setGrabbersPositions();
+}
+

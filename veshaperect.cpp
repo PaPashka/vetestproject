@@ -85,14 +85,6 @@ void VeShapeRect::rotate(qreal angle)
     setTransform(transform_item);
 }
 
-void VeShapeRect::initializeGrabbers()
-{
-    for (int i = 0; i < 8; i++) {
-        addGrabber();
-    }
-    setGrabbersPositions();
-}
-
 void VeShapeRect::setGrabbersPositions()
 {
     QRectF item_rect = rect();
@@ -171,4 +163,9 @@ void VeShapeRect::doOnGrabberMoved(VeGrabberDot *grabber, const QPointF &p_scene
         rotate(rotation_angle);
 
     }
+}
+
+int VeShapeRect::grabbersCount()
+{
+    return 8;
 }

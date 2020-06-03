@@ -40,10 +40,11 @@ private slots:
 protected:
     QList<VeGrabberDot *> grabbers_;
     virtual void addGrabber(int p_index = -1, bool p_state = false);
+    virtual void initializeGrabbers();
 
 private:
     virtual void setGrabbersPositions() = 0;
-
+    virtual int grabbersCount() = 0;
 
 };
 

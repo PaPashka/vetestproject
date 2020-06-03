@@ -125,23 +125,6 @@ void VeShapePolyline::setGrabbersPositions()
     }
 }
 
-void VeShapePolyline::initializeGrabbers()
-{
-    int delta_count_grabbers = path().elementCount() - grabbers_.count();
-
-    if (delta_count_grabbers < 0) {
-        for(int i = 0; i < delta_count_grabbers ; i++) {
-            delete grabbers_.last();
-            grabbers_.removeLast();
-        }
-    } else if (delta_count_grabbers > 0) {
-        for (int i = 0; i < delta_count_grabbers; i++) {
-            addGrabber();
-        }
-    }
-    setGrabbersPositions();
-}
-
 void VeShapePolyline::doOnGrabberMoved(VeGrabberDot *grabber, const QPointF &p_scene_pos, Qt::MouseButtons p_action)
 {
     if (p_action & Qt::LeftButton) {
@@ -186,4 +169,9 @@ void VeShapePolyline::doOnGrabberRelease(VeGrabberDot *grabber)
     }
     setPath(new_path);
     setGrabbersPositions();
+}
+
+int VeShapePolyline::grabbersCount()
+{
+    return path().elementCount();
 }

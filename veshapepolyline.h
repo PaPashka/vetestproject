@@ -25,11 +25,11 @@ protected:
 
 private:
     void setGrabbersPositions() override;
-    void initializeGrabbers();
 
 private slots:
     void doOnGrabberMoved(VeGrabberDot *grabber, const QPointF &p_scene_pos, Qt::MouseButtons p_action) override;
     void doOnGrabberRelease(VeGrabberDot *grabber) override;
+    int grabbersCount() override;
 
 };
 

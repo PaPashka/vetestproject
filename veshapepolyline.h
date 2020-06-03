@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QPainterPath>
 #include "veshapeitem.h"
-//#include "vegrabberdot.h"
 
 class VeShapePolyline : public VeShapeItem, public QGraphicsPathItem
 {
@@ -18,10 +17,6 @@ public:
     void setBrush(const QBrush &p_brush) override;
     void setPen(const QPen &p_pen) override;
     void moveBy(const QPointF &p_delta_pos) override;
-/*
-    void setCursor(const QCursor &p_cursor) override;
-    void unsetCursor() override;
-*/
     void initizlizeShape(const QPointF &p_start, const QPointF &p_end) override;
     int fromSvgElement(const QDomElement &p_element, const QTransform &p_transform) override;
 

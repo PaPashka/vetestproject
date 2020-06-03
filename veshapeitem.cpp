@@ -3,7 +3,7 @@
 VeShapeItem::VeShapeItem(QObject *parent)
     : QObject(parent)
 {
-    connect(parent, SIGNAL(itemSelected(const VeShapeItem *)), this, SLOT(setSelected(const VeShapeItem *)));
+    connect(parent, SIGNAL(itemSelected(const VeShapeItem *)), this, SLOT(itemSelectionEvent(const VeShapeItem *)));
 }
 
 QBrush VeShapeItem::brush() const
@@ -22,42 +22,10 @@ QPen VeShapeItem::pen() const
     return QPen();
 }
 
-void VeShapeItem::setSelected(const VeShapeItem *p_item)
-{
-    setGrabbersState(this == p_item);
-}
-
-void VeShapeItem::doOnGrabberMoved(VeGrabberDot *, const QPointF &, Qt::MouseButtons)
-{
-
-}
-
-void VeShapeItem::doOnGrabberRelease(VeGrabberDot *)
-{
-
-}
-
-void VeShapeItem::setGrabbersState(bool p_state)
-{
-    if (p_state) {
-        showGrabbers();
-    }
-    else {
-        hideGrabbers();
-    }
-}
-
-void VeShapeItem::showGrabbers()
+void VeShapeItem::itemSelectionEvent(const VeShapeItem *p_item)
 {
     for (int i = 0; i < grabbers_.count(); i++) {
-        grabbers_[i]->show();
-    }
-}
-
-void VeShapeItem::hideGrabbers()
-{
-    for (int i = 0; i < grabbers_.count(); i++) {
-        grabbers_[i]->hide();
+        grabbers_[i]->setVisible(this == p_item);
     }
 }
 

@@ -12,7 +12,6 @@
 #include <QDomDocument>
 #include "veshaperect.h"
 #include "veshapepolyline.h"
-//#include "veshapeitem.h"
 
 class VeCanvas : public QGraphicsScene
 {
@@ -27,7 +26,6 @@ public:
     };
 
     enum ActionType {
-//        ACT_NO_ACTION = -1,
         ACT_DRAW_ITEM,
         ACT_SELECTION,
         ACT_TRANSFORM,
@@ -35,8 +33,8 @@ public:
         ACT_MOVE_VIEW
     };
 
-    void setAction(int p_tool);
-    int getAction() const;
+    void setCurrentTool(int p_tool);
+    int getCurrentTool() const;
     void setCurrentBrush(const QBrush &p_color);
     QBrush getCurrentBrush() const;
     void setCurrentPen(const QPen &p_color);
@@ -52,7 +50,6 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-//    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
 private:

@@ -7,10 +7,8 @@
 #include <QGraphicsView>
 #include <QButtonGroup>
 #include <QGraphicsScene>
-//#include <QMessageBox>
 #include <QColorDialog>
 #include <QFileDialog>
-//#include "veshaperect.h"
 #include "vecanvas.h"
 
 QT_BEGIN_NAMESPACE

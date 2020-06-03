@@ -219,6 +219,7 @@ void VeCanvas::loadFromSVG(const QString &p_file)
         removeItem(dynamic_cast<QGraphicsItem *>(item));
         delete item;
     }
+    setSceneRect(0, 0, width(), height());
 
     QDomDocument svg_doc;
     QFile file(p_file);
@@ -287,7 +288,7 @@ void VeCanvas::loadFromSVG(const QString &p_file)
     file.close();
 }
 
-void VeCanvas::setAction(int p_tool)
+void VeCanvas::setCurrentTool(int p_tool)
 {
     current_tool_ = p_tool;
     if (current_tool_ != TOOL_SEL_MOVE_TRANS) {
@@ -310,7 +311,7 @@ void VeCanvas::setAction(int p_tool)
     }
 }
 
-int VeCanvas::getAction() const
+int VeCanvas::getCurrentTool() const
 {
     return current_action_;
 }

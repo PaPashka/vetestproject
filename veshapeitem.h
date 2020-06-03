@@ -30,22 +30,18 @@ public:
     virtual void initizlizeShape(const QPointF &, const QPointF &) = 0;
     virtual int fromSvgElement(const QDomElement &, const QTransform &) = 0;
 
-
 signals:
 
 private slots:
-    virtual void setSelected(const VeShapeItem *p_item);
-    virtual void doOnGrabberMoved(VeGrabberDot *, const QPointF &, Qt::MouseButtons);
-    virtual void doOnGrabberRelease(VeGrabberDot *);
+    virtual void itemSelectionEvent(const VeShapeItem *p_item);
+    virtual void doOnGrabberMoved(VeGrabberDot *, const QPointF &, Qt::MouseButtons) {};
+    virtual void doOnGrabberRelease(VeGrabberDot *) {};
 
 protected:
     QList<VeGrabberDot *> grabbers_;
     virtual void addGrabber(int p_index = -1, bool p_state = false);
 
 private:
-    virtual void setGrabbersState(bool p_state);
-    virtual void showGrabbers();
-    virtual void hideGrabbers();
     virtual void setGrabbersPositions() = 0;
 
 

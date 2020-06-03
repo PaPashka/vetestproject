@@ -35,7 +35,7 @@ VeMainWindow::~VeMainWindow()
 
 void VeMainWindow::slotForToolBtn_clicked()
 {
-    scene_->setAction(toolsGroup_->checkedId());
+    scene_->setCurrentTool(toolsGroup_->checkedId());
     switch (toolsGroup_->checkedId()) {
         case VeCanvas::TOOL_SEL_MOVE_TRANS: {
             ui->graphicsView->setCursor(Qt::ArrowCursor);

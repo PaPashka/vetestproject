@@ -24,6 +24,7 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
+    qreal k_min_point_distance_ = 1.5;
     void setGrabbersPositions() override;
     int grabbersCount() override;
 

@@ -86,13 +86,8 @@ void VeShapePolyline::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
         QPointF local_pos = mapFromScene(event->scenePos());
         QPainterPath old_path = path();
         QPainterPath new_path;
-        qreal offset_k = (VeShapeItem::pen().width()/2 > 1)? VeShapeItem::pen().width()/2 : 1;
+        qreal offset_k = VeShapeItem::pen().width() * 0.5;
 
-        QLineF first_line(local_pos.x() - offset_k, local_pos.y() - offset_k,
-                          local_pos.x() + offset_k, local_pos.y() + offset_k);
-        QLineF second_line(local_pos.x() + offset_k, local_pos.y() - offset_k,
-                           local_pos.x() - offset_k, local_pos.y() + offset_k);
-        QLineF polyline_element;
         bool new_point_added = false;
 
         new_path.moveTo(old_path.elementAt(0));
@@ -100,10 +95,23 @@ void VeShapePolyline::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
             if (new_point_added) {
                 new_path.lineTo(old_path.elementAt(i));
             } else {
-                polyline_element = QLineF(old_path.elementAt(i - 1), old_path.elementAt(i));
+                QLineF polyline_element(old_path.elementAt(i - 1), old_path.elementAt(i));
                 QPointF new_path_point;
-                if (polyline_element.intersects(first_line, &new_path_point) == QLineF::BoundedIntersection||
-                    polyline_element.intersects(second_line, &new_path_point) == QLineF::BoundedIntersection) {
+                QPointF intersect_point;
+                QLineF check_line;
+
+                check_line.setP1(local_pos);
+                check_line.setP2(QPointF(local_pos.x() + 10, local_pos.x() +10));
+
+                check_line.setAngle(check_line.angle() + check_line.angleTo(polyline_element) - 90);
+                polyline_element.intersects(check_line, &intersect_point);
+                check_line.setP2(intersect_point);
+                check_line.setLength(check_line.length() + 0.5 * offset_k);
+
+                if (polyline_element.intersects(check_line, &new_path_point) == QLineF::BoundedIntersection
+                        && QLineF(new_path_point, local_pos).length() <= offset_k
+                        && QLineF(new_path_point, polyline_element.p1()).length() >= k_min_point_distance_
+                        && QLineF(new_path_point, polyline_element.p2()).length() >= k_min_point_distance_) {
 
                     new_path.lineTo(new_path_point);
                     new_path.lineTo(old_path.elementAt(i));
@@ -150,7 +158,6 @@ void VeShapePolyline::doOnGrabberRelease(VeGrabberDot *grabber)
     QPainterPath old_path = path();
     QPainterPath new_path;
     QLineF points_distance;
-    qreal offset_accuracy = 1;    // точность срабатывания, определяет допустимое смещение
     int must_be_deleted = -1;
 
     int grabber_index = grabbers_.indexOf(grabber);
@@ -158,11 +165,11 @@ void VeShapePolyline::doOnGrabberRelease(VeGrabberDot *grabber)
 
     if (grabber_index >= 0 && grabber_index < old_path.elementCount() - 1) {
         points_distance.setP2(old_path.elementAt(grabber_index + 1));
-        must_be_deleted = (points_distance.length() <= offset_accuracy)? grabber_index + 1 : must_be_deleted;
+        must_be_deleted = (points_distance.length() <= k_min_point_distance_)? grabber_index + 1 : must_be_deleted;
     }
     if (grabber_index > 0 && grabber_index <= old_path.elementCount() - 1) {
         points_distance.setP2(old_path.elementAt(grabber_index - 1));
-        must_be_deleted = (points_distance.length() <= offset_accuracy)? grabber_index - 1 : must_be_deleted;
+        must_be_deleted = (points_distance.length() <= k_min_point_distance_)? grabber_index - 1 : must_be_deleted;
     }
     if (must_be_deleted >= 0 && old_path.elementCount() > 2) {
         new_path.moveTo(old_path.elementAt(0));

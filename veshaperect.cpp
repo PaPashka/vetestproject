@@ -82,7 +82,7 @@ bool VeShapeRect::contains(const QPointF &p_point) const
     if (brush().color().alpha() > 0) {
         return QGraphicsRectItem::contains(p_point);
     } else {
-        qreal offset_k = (pen().width() > 2)? pen().width() : 2; //для удобства наведения на тонкие линии
+        qreal offset_k = pen().width();
         QRectF item_bounding_rect = boundingRect();
         if (item_bounding_rect.x() + offset_k < item_bounding_rect.right() &&
             item_bounding_rect.y() + offset_k < item_bounding_rect.bottom() &&

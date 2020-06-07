@@ -70,7 +70,7 @@ void VeShapeItem::drawPattern(QPainter *p_painter)
         case UNDER_CURSOR: {
             int pattern_delta_y = 3;
             int pattern_delta_x = 5;
-            int dot_delta_y = 1;
+            int dot_delta_y = 0;
 
             while (dot_delta_y <= item_bounding_rect.height()) {
                 p_painter->setPen((((dot_delta_y / pattern_delta_y) % 2) == 0)? Qt::darkGray : Qt::lightGray);

@@ -98,7 +98,7 @@ QRectF VeShapePolyline::boundingRect() const
 bool VeShapePolyline::contains(const QPointF &p_point) const
 {
     QPainterPath line_path = path();
-    qreal offset_k = (pen().width() * 0.5 > 1)? pen().width() * 0.5 : 1;
+    qreal offset_k = pen().width() * 0.5;
     bool result = false;
 
     for(int i = 1; i < line_path.elementCount(); i++) {
@@ -141,7 +141,7 @@ void VeShapePolyline::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
                 QLineF polyline_element(old_path.elementAt(i - 1), old_path.elementAt(i));
                 QPointF new_path_point;
 
-                if (pointToLineProjection(local_pos, polyline_element, &new_path_point) == QLineF::BoundedIntersection
+                if (pointToLineProjection(local_pos, polyline_element, &new_path_point)
                         && QLineF(new_path_point, local_pos).length() <= offset_k
                         && QLineF(new_path_point, polyline_element.p1()).length() >= k_min_point_distance_
                         && QLineF(new_path_point, polyline_element.p2()).length() >= k_min_point_distance_) {
@@ -232,8 +232,15 @@ bool VeShapePolyline::pointToLineProjection(const QPointF &p_point, const QLineF
     check_line.setP2(QPointF(p_point.x() + 10, p_point.x() +10));
 
     check_line.setAngle(check_line.angle() + check_line.angleTo(p_line) - 90);
-    p_line.intersects(check_line, p_projection_point);
-    check_line.setP2(*p_projection_point);
-    check_line.setLength(check_line.length() + 2);
-    return p_line.intersects(check_line, p_projection_point) == QLineF::BoundedIntersection;
+    bool is_bounded_intersection = p_line.intersects(check_line, p_projection_point)  == QLineF::BoundedIntersection;
+    if (*p_projection_point == p_point && is_bounded_intersection) {
+
+        return true;
+
+    } else {
+        check_line.setP2(*p_projection_point);
+        check_line.setLength(check_line.length() + 2);
+
+        return p_line.intersects(check_line, p_projection_point) == QLineF::BoundedIntersection;
+    }
 }

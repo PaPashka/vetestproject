@@ -82,11 +82,18 @@ bool VeShapeRect::contains(const QPointF &p_point) const
     if (brush().color().alpha() > 0) {
         return QGraphicsRectItem::contains(p_point);
     } else {
-        qreal offset_k = (pen().width() > 2)? pen().width() : 2;
+        qreal offset_k = (pen().width() > 2)? pen().width() : 2; //для удобства наведения на тонкие линии
         QRectF item_bounding_rect = boundingRect();
-        QRectF item_inside_rect(item_bounding_rect.x() + offset_k, item_bounding_rect.y() + offset_k,
-                                item_bounding_rect.width() - 2 * offset_k, item_bounding_rect.height() - 2 * offset_k);
-        return QGraphicsRectItem::contains(p_point) && !item_inside_rect.contains(p_point);
+        if (item_bounding_rect.x() + offset_k < item_bounding_rect.right() &&
+            item_bounding_rect.y() + offset_k < item_bounding_rect.bottom() &&
+            item_bounding_rect.width() - 2 * offset_k > 0 &&
+            item_bounding_rect.height() - 2 * offset_k > 0) {
+            QRectF item_inside_rect(item_bounding_rect.x() + offset_k, item_bounding_rect.y() + offset_k,
+                                    item_bounding_rect.width() - 2 * offset_k, item_bounding_rect.height() - 2 * offset_k);
+            return QGraphicsRectItem::contains(p_point) && !item_inside_rect.contains(p_point);
+        } else {
+            return QGraphicsRectItem::contains(p_point);
+        }
     }
 }
 

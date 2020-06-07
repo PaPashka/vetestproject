@@ -150,6 +150,7 @@ void VeCanvas::keyPressEvent(QKeyEvent *event)
         removeItem(dynamic_cast<QGraphicsItem *>(selected_item_));
         delete selected_item_;
         selected_item_ = nullptr;
+        top_item_under_cursor_ = nullptr;
         setItemSelected(nullptr);
     }
 }
@@ -226,6 +227,8 @@ void VeCanvas::saveToSVG(const QString &p_file)
 void VeCanvas::loadFromSVG(const QString &p_file)
 {
     foreach (QGraphicsItem *item, items()) {
+        selected_item_ = nullptr;
+        top_item_under_cursor_ = nullptr;
         removeItem(dynamic_cast<QGraphicsItem *>(item));
         delete item;
     }

@@ -18,9 +18,23 @@ int VeGrabberDot::type() const
     return Type;
 }
 
-void VeGrabberDot::itemUnderCursorEvent(const VeShapeItem *p_item)
+void VeGrabberDot::highlight(bool p_state)
 {
-    is_active_ = p_item == nullptr;
+    if (p_state) {
+        setBrush(QBrush(Qt::red));
+        setPen(QPen(Qt::red, 1));
+    } else {
+        setBrush(QBrush(Qt::white));
+        setPen(QPen(Qt::black, 1));
+    }
+}
+
+void VeGrabberDot::itemUnderCursorEvent(const QGraphicsItem *p_item)
+{
+    is_active_ = dynamic_cast<QGraphicsItem *>(this) == p_item;
+    if (is_active_) {
+        highlight(true);
+    }
 }
 
 void VeGrabberDot::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -45,18 +59,8 @@ void VeGrabberDot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     is_action_in_progress_ = false;
 }
 
-void VeGrabberDot::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    Q_UNUSED(event)
-    if (is_active_) {
-        setBrush(QBrush(Qt::red));
-        setPen(QPen(Qt::red, 1));
-    }
-}
-
 void VeGrabberDot::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
-    setBrush(QBrush(Qt::white));
-    setPen(QPen(Qt::black, 1));
+    highlight(false);
 }

@@ -44,7 +44,7 @@ public:
 
 signals:
     void itemSelected(const VeShapeItem *p_item);
-    void itemUnderCursorChanged(const VeShapeItem *p_item);
+    void itemUnderCursorChanged(const QGraphicsItem *p_item);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -60,6 +60,7 @@ private:
     bool is_action_in_progress_;
     QBrush current_brush_;
     QPen current_pen_;
+    QGraphicsItem *top_item_under_cursor_;
 
     bool setItemSelected(QGraphicsItem *p_item);
     int svgItemNameToShapeType(const QString &p_name);

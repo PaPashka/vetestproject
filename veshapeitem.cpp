@@ -5,7 +5,7 @@ VeShapeItem::VeShapeItem(QObject *parent)
     , applied_pattern_(NO_PATTERN)
 {
     connect(parent, SIGNAL(itemSelected(const VeShapeItem *)), this, SLOT(itemSelectionEvent(const VeShapeItem *)));
-    connect(parent, SIGNAL(itemUnderCursorChanged(const VeShapeItem *)), this, SLOT(itemUnderCursorEvent(const VeShapeItem *)));
+    connect(parent, SIGNAL(itemUnderCursorChanged(const QGraphicsItem *)), this, SLOT(itemUnderCursorEvent(const QGraphicsItem *)));
 }
 
 void VeShapeItem::itemSelectionEvent(const VeShapeItem *p_item)
@@ -15,9 +15,9 @@ void VeShapeItem::itemSelectionEvent(const VeShapeItem *p_item)
     }
 }
 
-void VeShapeItem::itemUnderCursorEvent(const VeShapeItem *p_item)
+void VeShapeItem::itemUnderCursorEvent(const QGraphicsItem *p_item)
 {
-    applied_pattern_ = (this == p_item)? UNDER_CURSOR : NO_PATTERN;
+    applied_pattern_ = (dynamic_cast<QGraphicsItem *>(this) == p_item)? UNDER_CURSOR : NO_PATTERN;
 }
 
 void VeShapeItem::addGrabber(int p_index, bool p_state)
@@ -28,8 +28,8 @@ void VeShapeItem::addGrabber(int p_index, bool p_state)
                 this, SLOT(doOnGrabberMoved(VeGrabberDot *, const QPointF &, Qt::MouseButtons)));
         connect(new_grabber, SIGNAL(itemRelease(VeGrabberDot *)),
                 this, SLOT(doOnGrabberRelease(VeGrabberDot *)));
-        connect(parent(), SIGNAL(itemUnderCursorChanged(const VeShapeItem *)),
-                new_grabber, SLOT(itemUnderCursorEvent(const VeShapeItem *)));
+        connect(parent(), SIGNAL(itemUnderCursorChanged(const QGraphicsItem *)),
+                new_grabber, SLOT(itemUnderCursorEvent(const QGraphicsItem *)));
 
 
         if (p_index < 0 || p_index >= grabbers_.count() ) {

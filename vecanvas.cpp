@@ -8,6 +8,7 @@ VeCanvas::VeCanvas(QObject *parent)
     , is_action_in_progress_(false)
     , current_brush_(Qt::transparent)
     , current_pen_(Qt::black, 1)
+    , top_item_under_cursor_(nullptr)
 {
 
 }
@@ -99,10 +100,12 @@ void VeCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             }
         }
     } else {
-        VeShapeItem *top_item_under_cursor = dynamic_cast<VeShapeItem *>(itemAt(event->scenePos(), QTransform()));
-        top_item_under_cursor = (top_item_under_cursor == selected_item_)? nullptr : top_item_under_cursor;
-        emit itemUnderCursorChanged(top_item_under_cursor);
-        update();
+        QGraphicsItem *top_item = itemAt(event->scenePos(), QTransform());
+        if (top_item_under_cursor_ != top_item) {
+            top_item_under_cursor_ = (top_item == dynamic_cast<QGraphicsItem *>(selected_item_))? nullptr : top_item;
+            emit itemUnderCursorChanged(top_item_under_cursor_);
+            update();
+        }
 
         QGraphicsScene::mouseMoveEvent(event);
     }

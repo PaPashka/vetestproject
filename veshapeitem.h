@@ -45,7 +45,7 @@ private slots:
     virtual void itemSelectionEvent(const VeShapeItem *p_item);
     virtual void doOnGrabberMoved(VeGrabberDot *, const QPointF &, Qt::MouseButtons) {};
     virtual void doOnGrabberRelease(VeGrabberDot *) {};
-    virtual void itemUnderCursorEvent(const VeShapeItem *p_item);
+    virtual void itemUnderCursorEvent(const QGraphicsItem *p_item);
 
 protected:
     QList<VeGrabberDot *> grabbers_;

@@ -1,2 +1,2 @@
 # vetestproject
-Simple vecror graphics editor
+Simple vector graphics editor

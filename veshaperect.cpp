@@ -11,6 +11,16 @@ int VeShapeRect::type() const
     return Type;
 }
 
+QBrush VeShapeRect::brush() const
+{
+    return QGraphicsRectItem::brush();
+}
+
+QPen VeShapeRect::pen() const
+{
+    return QGraphicsRectItem::pen();
+}
+
 void VeShapeRect::setBrush(const QBrush &p_brush)
 {
     QGraphicsRectItem::setBrush(p_brush);
@@ -60,6 +70,31 @@ int VeShapeRect::fromSvgElement(const QDomElement &p_element, const QTransform &
     } else {
         return -1;
     }
+}
+
+QRectF VeShapeRect::boundingRect() const
+{
+    return QGraphicsRectItem::boundingRect();
+}
+
+bool VeShapeRect::contains(const QPointF &p_point) const
+{
+    if (brush().color().alpha() > 0) {
+        return QGraphicsRectItem::contains(p_point);
+    } else {
+        qreal offset_k = (pen().width() > 2)? pen().width() : 2;
+        QRectF item_bounding_rect = boundingRect();
+        QRectF item_inside_rect(item_bounding_rect.x() + offset_k, item_bounding_rect.y() + offset_k,
+                                item_bounding_rect.width() - 2 * offset_k, item_bounding_rect.height() - 2 * offset_k);
+        return QGraphicsRectItem::contains(p_point) && !item_inside_rect.contains(p_point);
+    }
+}
+
+void VeShapeRect::paint(QPainter *p_painter, const QStyleOptionGraphicsItem *p_option, QWidget *p_widget)
+{
+    QGraphicsRectItem::paint(p_painter, p_option, p_widget);
+
+    drawPattern(p_painter);
 }
 
 void VeShapeRect::setRect(const QRectF &p_rectangle)

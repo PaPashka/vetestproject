@@ -65,10 +65,12 @@ void VeCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 QGraphicsScene::mousePressEvent(event);                
                 break;                
             }
-        }        
-    } else {        
+        }
+    } else {
         QGraphicsScene::mousePressEvent(event);        
     }
+    emit itemUnderCursorChanged(nullptr);
+    update();
 }
 
 void VeCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -85,8 +87,8 @@ void VeCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             }
             case ACT_MOVE_VIEW: {
                 QRectF rect = sceneRect();
-                setSceneRect(rect.x() - event->screenPos().x() + event->lastScreenPos().x(),//start_point_.x(),
-                             rect.y() - event->screenPos().y() + event->lastScreenPos().y(),//start_point_.y(),
+                setSceneRect(rect.x() - event->screenPos().x() + event->lastScreenPos().x(),
+                             rect.y() - event->screenPos().y() + event->lastScreenPos().y(),
                              rect.width(),
                              rect.height());
                 break;
@@ -96,8 +98,12 @@ void VeCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 break;
             }
         }
-    }
-    else {
+    } else {
+        VeShapeItem *top_item_under_cursor = dynamic_cast<VeShapeItem *>(itemAt(event->scenePos(), QTransform()));
+        top_item_under_cursor = (top_item_under_cursor == selected_item_)? nullptr : top_item_under_cursor;
+        emit itemUnderCursorChanged(top_item_under_cursor);
+        update();
+
         QGraphicsScene::mouseMoveEvent(event);
     }
 }

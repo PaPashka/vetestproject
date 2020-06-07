@@ -2,6 +2,8 @@
 
 VeGrabberDot::VeGrabberDot(QObject *parent, QGraphicsItem *parent_item)
     : QObject(parent)
+    , is_active_(false)
+    , is_action_in_progress_(false)
 {
     setParentItem(parent_item);
     setAcceptHoverEvents(true);
@@ -16,27 +18,40 @@ int VeGrabberDot::type() const
     return Type;
 }
 
+void VeGrabberDot::itemUnderCursorEvent(const VeShapeItem *p_item)
+{
+    is_active_ = p_item == nullptr;
+}
+
 void VeGrabberDot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    start_delta_pos_ = event->pos() - rect().center();
+    if (is_active_) {
+        start_delta_pos_ = event->pos() - rect().center();
+        is_action_in_progress_ = true;
+    }
 }
 
 void VeGrabberDot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    emit itemMoved(this, event->scenePos() - start_delta_pos_, event->buttons());
+    if (is_action_in_progress_) {
+        emit itemMoved(this, event->scenePos() - start_delta_pos_, event->buttons());
+    }
 }
 
 void VeGrabberDot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     emit itemRelease(this);
+    is_action_in_progress_ = false;
 }
 
 void VeGrabberDot::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
-    setBrush(QBrush(Qt::red));
-    setPen(QPen(Qt::red, 1));
+    if (is_active_) {
+        setBrush(QBrush(Qt::red));
+        setPen(QPen(Qt::red, 1));
+    }
 }
 
 void VeGrabberDot::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)

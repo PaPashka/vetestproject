@@ -42,9 +42,9 @@ public:
     void saveToSVG(const QString &p_file);
     void loadFromSVG(const QString &p_file);
 
-
 signals:
     void itemSelected(const VeShapeItem *p_item);
+    void itemUnderCursorChanged(const VeShapeItem *p_item);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

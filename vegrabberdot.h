@@ -8,6 +8,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneHoverEvent>
 
+class VeShapeItem;
+
 class VeGrabberDot : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
@@ -22,8 +24,13 @@ signals:
     void itemMoved(VeGrabberDot *grabber, const QPointF &p_pos, Qt::MouseButtons p_action);
     void itemRelease(VeGrabberDot *grabber);
 
+private slots:
+    void itemUnderCursorEvent(const VeShapeItem *p_item);
+
 private:
+    bool is_active_;
     QPointF start_delta_pos_;
+    bool is_action_in_progress_;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

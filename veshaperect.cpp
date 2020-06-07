@@ -37,6 +37,11 @@ void VeShapeRect::moveBy(const QPointF &p_pos)
     setRect(rect().x() + local_delta_pos.x(), rect().y() + local_delta_pos.y(), rect().width(), rect().height());
 }
 
+QPainterPath VeShapeRect::shape() const
+{
+    return QGraphicsRectItem::shape();
+}
+
 void VeShapeRect::initizlizeShape(const QPointF &p_start, const QPointF &p_end)
 {
     resetTransform();

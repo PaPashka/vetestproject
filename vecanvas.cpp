@@ -67,11 +67,11 @@ void VeCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 break;                
             }
         }
+        emit itemUnderCursorChanged(nullptr);
+        update();
     } else {
         QGraphicsScene::mousePressEvent(event);        
     }
-    emit itemUnderCursorChanged(nullptr);
-    update();
 }
 
 void VeCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -101,7 +101,8 @@ void VeCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         }
     } else {
         QGraphicsItem *top_item = itemAt(event->scenePos(), QTransform());
-        if (top_item_under_cursor_ != top_item) {
+        if (top_item_under_cursor_ != top_item && !(dynamic_cast<VeGrabberDot *>(top_item_under_cursor_) != nullptr &&
+                                                    event->buttons() & Qt::RightButton)) {
             top_item_under_cursor_ = (top_item == dynamic_cast<QGraphicsItem *>(selected_item_))? nullptr : top_item;
             emit itemUnderCursorChanged(top_item_under_cursor_);
             update();

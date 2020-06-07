@@ -37,7 +37,7 @@ public:
     virtual int fromSvgElement(const QDomElement &, const QTransform &) = 0;
     virtual QRectF boundingRect() const = 0;
     virtual bool contains(const QPointF &) const = 0;
-
+    virtual QPainterPath shape() const = 0;
 
 signals:
 

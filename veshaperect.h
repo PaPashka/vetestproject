@@ -31,6 +31,7 @@ public:
     void setBrush(const QBrush &p_brush) override;
     void setPen(const QPen &p_pen) override;
     void moveBy(const QPointF &p_delta_pos) override;
+    QPainterPath shape() const override;
     void initizlizeShape(const QPointF &p_start, const QPointF &p_end) override;
     int fromSvgElement(const QDomElement &p_element, const QTransform &p_transform) override;
     virtual QRectF boundingRect() const override;

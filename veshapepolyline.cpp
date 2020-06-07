@@ -45,6 +45,11 @@ void VeShapePolyline::moveBy(const QPointF &p_pos)
     setGrabbersPositions();
 }
 
+QPainterPath VeShapePolyline::shape() const
+{
+    return QGraphicsPathItem::shape();
+}
+
 void VeShapePolyline::initizlizeShape(const QPointF &p_start, const QPointF &p_end)
 {
     resetTransform();

@@ -64,28 +64,17 @@ void VeShapeItem::initializeGrabbers()
 
 void VeShapeItem::drawPattern(QPainter *p_painter)
 {
-    QRectF item_bounding_rect = boundingRect();
-
     switch (applied_pattern_) {
         case UNDER_CURSOR: {
-            int pattern_delta_y = 3;
-            int pattern_delta_x = 5;
-            int dot_delta_y = 0;
+            QPen pattern_pen(Qt::red);
+            QColor pattern_brush_color(Qt::red);
+            pattern_brush_color.setAlpha((brush().color().alpha() > 0)? 255: 0);
+            QBrush pattern_brush(pattern_brush_color);
+            pattern_brush.setStyle(Qt::Dense6Pattern);
+            p_painter->setPen(pattern_pen);
+            p_painter->setBrush(pattern_brush);
+            p_painter->drawPath(shape());
 
-            while (dot_delta_y <= item_bounding_rect.height()) {
-                p_painter->setPen((((dot_delta_y / pattern_delta_y) % 2) == 0)? Qt::darkGray : Qt::lightGray);
-                int dot_delta_x = pattern_delta_x - (dot_delta_y % pattern_delta_x);
-                while (dot_delta_x <= item_bounding_rect.width()) {
-
-                    if (contains(QPointF(item_bounding_rect.x() + dot_delta_x,
-                                         item_bounding_rect.y() + dot_delta_y))) {
-                        p_painter->drawPoint(item_bounding_rect.x() + dot_delta_x,
-                                             item_bounding_rect.y() + dot_delta_y);
-                    }
-                    dot_delta_x += pattern_delta_x;
-                }
-                dot_delta_y += pattern_delta_y;
-            }
             break;
         }
         default: {

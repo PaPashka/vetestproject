@@ -154,7 +154,7 @@ void VeShapePolyline::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
                     new_path.lineTo(new_path_point);
                     new_path.lineTo(old_path.elementAt(i));
 
-                    addGrabber(i, true);
+                    addGrabber(i, true, true, true);
 
                     new_point_added = true;
                 } else {

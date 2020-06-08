@@ -55,6 +55,8 @@ void VeCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
                 } else if (selected_item_) {
                     current_action_ = ACT_MOVE_ITEM;
+                    emit itemUnderCursorChanged(nullptr);
+                    update();
                 } else {
                     current_action_ = ACT_MOVE_VIEW;
                     start_point_ = event->screenPos();
@@ -67,8 +69,6 @@ void VeCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 break;                
             }
         }
-        emit itemUnderCursorChanged(nullptr);
-        update();
     } else {
         QGraphicsScene::mousePressEvent(event);        
     }

@@ -15,7 +15,8 @@ class VeGrabberDot : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    explicit VeGrabberDot(QObject *parent_object = nullptr, QGraphicsItem *parent_item = nullptr);
+    explicit VeGrabberDot(QObject *parent_object = nullptr, QGraphicsItem *parent_item = nullptr,
+                          bool p_visible = false, bool p_active = false, bool p_highlight = false);
 
     enum { Type = 65536 + 2 };
 

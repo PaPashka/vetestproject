@@ -20,9 +20,9 @@ void VeShapeItem::itemUnderCursorEvent(const QGraphicsItem *p_item)
     applied_pattern_ = (dynamic_cast<QGraphicsItem *>(this) == p_item)? UNDER_CURSOR : NO_PATTERN;
 }
 
-void VeShapeItem::addGrabber(int p_index, bool p_state)
+void VeShapeItem::addGrabber(int p_index, bool p_visible, bool p_active, bool p_highlight)
 {
-        VeGrabberDot *new_grabber = new VeGrabberDot(this, dynamic_cast<QGraphicsItem *>(this));
+        VeGrabberDot *new_grabber = new VeGrabberDot(this, dynamic_cast<QGraphicsItem *>(this), p_visible, p_active, p_highlight);
 
         connect(new_grabber, SIGNAL(itemMoved(VeGrabberDot *, const QPointF &, Qt::MouseButtons)),
                 this, SLOT(doOnGrabberMoved(VeGrabberDot *, const QPointF &, Qt::MouseButtons)));
@@ -36,12 +36,6 @@ void VeShapeItem::addGrabber(int p_index, bool p_state)
             grabbers_.append(new_grabber);
         } else {
             grabbers_.insert(p_index, new_grabber);
-        }
-
-        if (p_state) {
-            new_grabber->show();
-        } else {
-            new_grabber->hide();
         }
 }
 

@@ -49,7 +49,7 @@ private slots:
 
 protected:
     QList<VeGrabberDot *> grabbers_;
-    virtual void addGrabber(int p_index = -1, bool p_state = false);
+    virtual void addGrabber(int p_index = -1, bool p_visible = false, bool p_active = false, bool p_highlight = false);
     virtual void initializeGrabbers();
     void drawPattern(QPainter *painter);
 

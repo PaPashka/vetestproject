@@ -1,15 +1,23 @@
 #include "vegrabberdot.h"
 
-VeGrabberDot::VeGrabberDot(QObject *parent, QGraphicsItem *parent_item)
+VeGrabberDot::VeGrabberDot(QObject *parent, QGraphicsItem *parent_item,
+                           bool p_visible, bool p_active, bool p_highlight)
     : QObject(parent)
-    , is_active_(false)
+    , is_active_(p_active)
     , is_action_in_progress_(false)
 {
     setParentItem(parent_item);
     setAcceptHoverEvents(true);
     setBrush(QBrush(Qt::white));
     setPen(QPen(Qt::black, 1));
-    hide();
+    if (p_visible) {
+        show();
+    } else {
+        hide();
+    }
+    if (p_visible && p_highlight && p_active) {
+        highlight(true);
+    }
     setRect(-3, -3, 6, 6);
 }
 
